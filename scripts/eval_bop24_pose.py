@@ -264,7 +264,7 @@ for result_filename in result_filenames:
 
             mAP_per_error_type[error_type] = np.mean(mAP_over_correct_ths)
             logger.info(
-                f"{error['type']}, Final mAP: {mAP_per_error_type[error['type']]:.3f}"
+                f"{error_type}, Final mAP: {mAP_per_error_type[error_type]:.3f}"
             )
 
     time_total = time.time() - time_start
@@ -280,9 +280,10 @@ for result_filename in result_filenames:
     # Calculate the final scores.
     final_scores = {}
     for error in p["errors"]:
-        final_scores["bop24_mAP_{}".format(error["type"])] = mAP_per_error_type[
-            error["type"]
-        ]
+        error_type = error["type"]
+        if "threshold_unit" in error:
+            error_type = error_type + "_" + error["threshold_unit"]
+        final_scores[f"bop24_mAP_{error_type}"] = mAP_per_error_type[error_type]
 
     # Final score for the given dataset.
     final_scores["bop24_mAP"] = np.mean(
