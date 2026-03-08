@@ -47,6 +47,7 @@ class POSE_ERROR_VSD_ARGS:
             value = np.array(value)
         np.savez(path, self.__dict__)
 
+    @staticmethod
     def from_file(path):
         args = POSE_ERROR_VSD_ARGS()
         data = np.load(path, allow_pickle=True)
@@ -54,11 +55,11 @@ class POSE_ERROR_VSD_ARGS:
         for key, value in data.items():
             if key == "vsd_taus":
                 setattr(args, key, list(value))
-            if key == "vsd_normalized_by_diameter":
+            elif key == "vsd_normalized_by_diameter":
                 setattr(args, key, bool(value))
-            if key == "step":
+            elif key == "step":
                 setattr(args, key, str(value))
-            if key == "obj_id":
+            elif key == "obj_id":
                 setattr(args, key, int(value))
             else:
                 setattr(args, key, value)
